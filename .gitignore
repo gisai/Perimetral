@@ -1,0 +1,16 @@
+
+# Executable
+*.exe
+*.out
+*.app
+*.hex
+
+# System files
+*.idea
+*.DS_Store
+*.git
+
+# Project files
+
+*.cproject
+*.project

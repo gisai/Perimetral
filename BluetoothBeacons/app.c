@@ -32,6 +32,7 @@ void error(){
 void help(){
 	printf("-->Acciones posibles: \n");
 	printf("-->listaBeacons: función que devuelve los beacons que se encuentren en las cercanías\n");
+  main();
 }
 
 /* Main function  */
@@ -44,13 +45,46 @@ int main(){
   	printf ("-->La cadena leída es: %s \n", action);
     /* Selecting the correct function */
   	if (!strcmp(action,"listaBeacons\n")){
-  		lista_beacons();
+      int pid;
+      pid = fork();
+      switch(pid){
+        case -1: // Si pid es -1 quiere decir que ha habido un error
+         perror("No se ha podido crear el proceso\n");
+          break;
+        case 0: // Cuando pid es cero quiere decir que es el proceso hijo
+          lista_beacons();
+          break;
+        default: // Cuando es distinto de cero es el padre
+          break;
+      }
   	}
     else if (!strcmp(action,"devices\n")){
-      devices();
+      int pid;
+      pid = fork();
+      switch(pid){
+        case -1: // Si pid es -1 quiere decir que ha habido un error
+          perror("No se ha podido crear el proceso\n");
+          break;
+        case 0: // Cuando pid es cero quiere decir que es el proceso hijo
+          devices();
+          break;
+        default: // Cuando es distinto de cero es el padre
+          break;
+      }
     }
     else if (!strcmp(action,"infobeacons\n")){
-      infoBeacons();
+      int pid;
+      pid = fork();
+      switch(pid){
+        case -1: // Si pid es -1 quiere decir que ha habido un error
+          perror("No se ha podido crear el proceso\n");
+          break;
+        case 0: // Cuando pid es cero quiere decir que es el proceso hijo
+          infoBeacons();
+          break;
+        default: // Cuando es distinto de cero es el padre
+          break;
+      }
     }
   	else if (!strcmp(action,"help\n")){
   		help();

@@ -1,0 +1,11 @@
+// Copyright 2017 Silicon Laboratories, Inc.
+//
+//
+
+Executing: bgbuild.exe (C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v1.0\protocol\bluetooth_2.3\bin\bgbuild.exe)
+Output:
+ALL OK
+
+
+
+

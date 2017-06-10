@@ -33,6 +33,7 @@ function parse_rssi {
       RSSI=$[RSSI - 256]
 }
 
+
 # Ejecución de las lineas de comando adecuadas para obtener los beacons.
 if [[ $1 == "parse" ]]; then
     packet=""
@@ -52,10 +53,10 @@ if [[ $1 == "parse" ]]; then
                     parse_ib_power "$packet"
                     parse_rssi "$packet"
                     if [[ $2 == "-b" ]]; then
-	                    echo "$UUID $MAJOR $MINOR $POWER $RSSI"
+	                    echo "$UUID $MAJOR $MINOR $POWER $RSSI" > $2
                     else
-                        # Escribimos el beacon en un archivo, llamado evento.txt
-    	                echo  "$UUID $MAJOR $MINOR $POWER $RSSI" > evento.txt
+                        # Mandamos la salida para la cola fifo
+    	                echo "$UUID $MAJOR $MINOR $POWER $RSSI" > $2
                     fi
                 fi
                 capturing=""

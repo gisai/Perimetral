@@ -11,6 +11,9 @@
 	#include <unistd.h>  /* UNIX Standard Definitions 	   */ 
 	#include <errno.h>   /* ERROR Number Definitions           */
 	#include <signal.h>
+	
+	#include "RFID_RX211.h"
+	#include "interpreter.c"
  
 	/*File Descriptor*/
 	int fd;		
@@ -20,6 +23,9 @@
 	
 	//Longitud de respuesta vacía
 	int size_emptyResponse = 7;
+	
+	//Longitud mensaje con Tag
+	int size_fullResponse = 39;
 	
 	/*Función para poder cerar el proceso infinito*/
 	void term(int signum)	{
@@ -54,7 +60,7 @@
 
 		/* /dev/ttyUSB0 es el puerto físico donde está el lector */
 		/* O_RDWR   - Read/Write access to serial port       */
-		fd = open("/dev/ttyUSB0", O_RDWR);	/
+		fd = open("/dev/ttyUSB0", O_RDWR);	
 			
 		if (debug) {
 			if(fd == -1)						
@@ -125,30 +131,49 @@
 		//Bucle principal
 		while (1) {
 			
+			int byte_leido = 0;
+			
 			//Leer las respuestas al comando
 			bytes_read = read(fd,&read_buffer,size_emptyResponse); /* Read the data*/
+			
+			if (read_buffer[1] != '\x00' && read_buffer[0] == '\x55') {
+				/*Revisión de los datos*/
+				if(debug) {
+					for(int i=0;i<bytes_read;i++) {	 /*printing only the received characters*/
+						//Eliminamos la cabecera
+						if (read_buffer[i] != '\x55') {
+							printf("%02x",read_buffer[i]);
+						}  
+					}		
+					printf("\n");
+				}
 				
-			if(debug) {
-				printf("\n\n  Bytes Rxed -%d", bytes_read); /* Print the number of bytes read */
-				printf("\n\n  ");
+				//Composición del mensaje completo
+				char read_fullBufferTag[size_fullResponse];				
+				for(int i=0;i<bytes_read;i++) {	
+					read_fullBufferTag[i+byte_leido] = read_buffer[i];
+				}				
+				byte_leido += bytes_read;
+					
+				//Lectura hasta el total de bytes	
+				while (byte_leido < size_fullResponse) {			
+					bytes_read = read(fd,&read_buffer,size_emptyResponse); /* Read the data*/
+					for(int i=0;i<bytes_read;i++) {	
+						read_fullBufferTag[i+byte_leido] = read_buffer[i];
+					}				
+					byte_leido += bytes_read;
+				}
+				
+				packetProcessing(read_fullBufferTag);
+				
+				if(debug) {
+					for(int i=0;i<size_fullResponse;i++) {	
+						printf("%02x",read_fullBufferTag[i]); 
+					}		
+					printf("\n");
+				}
 			}
 			
-			/*Revisión de los datos*/
-			if(debug) {
-				for(i=0;i<bytes_read;i++) {	 /*printing only the received characters*/
-					//Eliminamos la cabecera
-					if (read_buffer[i] != '\x55') {
-						printf("%02x",read_buffer[i]);
-					}  
-				}		
-				printf("\n");
-			}
-			/*if (read_buffer[] == '' && read_buffer[] == '') {
-				char read_bufferTag[33];
-				bytes_read = read(fd,&read_bufferTag,33);
-				
-			}
-			*/
 		}
 	
 		if(debug) {printf("\n +----------------------------------+\n\n\n");}

@@ -8,4 +8,4 @@
 # Borja Bordel GISAI UPM
 
 
-./RFID.out
+root/RFID.out

@@ -1,0 +1,1 @@
+adb [-s (id_dispositivo)] shell "root/antenaInit.sh"

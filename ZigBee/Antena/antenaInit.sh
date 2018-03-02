@@ -8,4 +8,5 @@
 # Borja Bordel GISAI UPM
 
 
+export LD_LIBRARY_PATH=/root/librxtxSerial.so:$LD_LIBRARY_PATH
 java -jar discover.jar

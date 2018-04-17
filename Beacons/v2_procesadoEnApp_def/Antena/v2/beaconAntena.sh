@@ -17,23 +17,31 @@ function parse_ib_uuid {
 function parse_ib_major {
     MAJOR=`echo $1 | sed 's/^.\{117\}\(.\{5\}\).*$/\1/'`
     MAJOR=`echo $MAJOR | sed 's/\ //g'`
+	# CONVERSIÓN DE HEXADECIMAL A DECIMAL
+	# ¡CUIDADO! OPERACIÓN LENTA, REQUIERE DECENAS DE MS
     #MAJOR=`echo "ibase=16; $MAJOR" | bc`
 }
 
 function parse_ib_minor {
     MINOR=`echo $1 | sed 's/^.\{123\}\(.\{5\}\).*$/\1/'`
     MINOR=`echo $MINOR | sed 's/\ //g'`
+	# CONVERSIÓN DE HEXADECIMAL A DECIMAL
+	# ¡CUIDADO! OPERACIÓN LENTA, REQUIERE DECENAS DE MS
     #MINOR=`echo "ibase=16; $MINOR" | bc`
 }
 
 function parse_ib_power {
     POWER=`echo $1 | sed 's/^.\{129\}\(.\{2\}\).*$/\1/'`
+	# CONVERSIÓN DE HEXADECIMAL A DECIMAL
+	# ¡CUIDADO! OPERACIÓN LENTA, REQUIERE DECENAS DE MS
     #POWER=`echo "ibase=16; $POWER" | bc`
 }
 
 function parse_rssi {
       LEN=$[${#1} - 2]
       RSSI=`echo $1 | sed "s/^.\{$LEN\}\(.\{2\}\).*$/\1/"`
+	  # CONVERSIÓN DE HEXADECIMAL A DECIMAL
+	# ¡CUIDADO! OPERACIÓN LENTA, REQUIERE DECENAS DE MS
       #RSSI=`echo "ibase=16; $RSSI" | bc`
       #RSSI=$[RSSI - 256 + $POWER]
 }
@@ -59,7 +67,7 @@ if [[ $1 == "parse" ]]; then
                     parse_rssi "$packet"
 					NOW=$(date +%s)
                     if [[ $2 == "-b" ]]; then
-	                    echo "$count {ID: {IDSystem:$UUID, IDGroup:$MAJOR, IDPerson: $MINOR}, IDAnte:$idAntena, pow:$POWER, rssi:$RSSI, time:$NOW}"
+	                    echo "{ID: {IDSystem:$UUID, IDGroup:$MAJOR, IDPerson: $MINOR}, IDAnte:$idAntena, pow:$POWER, rssi:$RSSI, time:$NOW}"
                     else
                         # Mandamos la salida para la cola fifo
     	                echo "{ID: {IDSystem:$UUID, IDGroup:$MAJOR, IDPerson: $MINOR}, IDAnte:$idAntena, pow:$POWER, rssi:$RSSI, time:$NOW}" > $2

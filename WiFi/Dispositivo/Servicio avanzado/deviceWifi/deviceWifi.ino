@@ -5,13 +5,22 @@
  */
  
 #include <ESP8266WiFi.h>                  //Incluye la librería ESP8266WiFi
+#include <Wire.h>
+#include <Adafruit_MMA8451.h>
+#include <Adafruit_Sensor.h>
  
 const char ssid[] = "NodeMCU-CUADRILLA#1";    //Definimos la SSDI de nuestro servidor WiFi -nombre de red- 
 const char password[] = "12345678";       //Definimos la contraseña de nuestro servidor 
 WiFiServer server(80);                    //Definimos el puerto de comunicaciones
 
 //Definimos el pin de salida - GPIO2 / D4
-int PinLED = 2;         
+int PinLED = 2;       
+
+Adafruit_MMA8451 mma = Adafruit_MMA8451();
+double max_error = 1.5;
+int pin_bzz = 3;
+int bateria;
+
 
 /* 
  *  CONFIGURACIÓN
@@ -42,6 +51,21 @@ void setup() {
   //Serial.println();
   //Serial.print("Access Point - Nueva direccion IP: ");
   //Serial.println(WiFi.softAPIP());
+
+  Serial.println("Adafruit MMA8451 test!");
+  
+
+  if (! mma.begin()) {
+    Serial.println("Couldnt start");
+    while (1);
+  }
+  Serial.println("MMA8451 found!");
+  
+  mma.setRange(MMA8451_RANGE_2_G);
+  
+  Serial.print("Range = "); 
+  Serial.print(2 << mma.getRange());  
+  Serial.println("G");
 }
 
  
@@ -57,16 +81,41 @@ void loop()
   }
  
   // Espera hasta que el cliente envía alguna petición
-  while(!client.available()){
+  /*while(!client.available()){
     delay(1);
   }
  
   // Lee la petición
   String peticion = client.readStringUntil('r');
-  client.flush();  
+  */
+   client.flush(); 
 
-  //Envío avanzado de datos si procede
- 
+   //Envío avanzado de datos si procede
+   client.print("{bateria:");
+   bateria = analogRead(A0);  
+   client.print(bateria);
+   client.print(",");
+
+  /* EVENTO DE LECTURA */ 
+  sensors_event_t event; 
+  mma.getEvent(&event);
+
+  /* 
+   *  Por como se ha dispuesto el sensor y el nodo, la ecleración debe ser 9,8 m/s^2 en el eje Y y cero en los demás ejes
+   *  Si no fuera así ha habido una caída
+  */
+  if (abs(event.acceleration.x) > max_error || abs(event.acceleration.z) > max_error) {
+    //se ha producido una caída
+     client.print("caida:si");
+     tone(pin_bzz, 1000);
+  } else {
+    noTone(pin_bzz);
+    client.print("caida:no");
+  }
+  Serial.println();
+  client.println("}");
+  // Se finaliza la petición al cliente. Se inicaliza la espera de una nueva petición.
+  
   //Desconexión de los clientes
   //WiFi.softAPdisconnect();
 }

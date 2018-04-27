@@ -1,6 +1,6 @@
 /**************************************************************************/
 /*!
- *  NODO BT AVANZADO INCLUYENDO ACC Y BUZZER PARA AVISO DE CAÍDAS
+ *  NODO WiFi AVANZADO INCLUYENDO ACC Y BUZZER PARA AVISO DE CAÍDAS
  *  PROYECTO PERIMETER SECURITY
     GISAI UPM  BORJA BORDEL 
     2017
@@ -10,18 +10,14 @@
 #include <Wire.h>
 #include <Adafruit_MMA8451.h>
 #include <Adafruit_Sensor.h>
-#include <SoftwareSerial.h>
 
 #define max_error 1.5
-#define pin_bzz 2
-
-SoftwareSerial mySerial(11, 12); //RX, TX
+#define pin_bzz A0
 
 Adafruit_MMA8451 mma = Adafruit_MMA8451();
 
 void setup(void) {
   Serial.begin(9600);
-  mySerial.begin(9600);
   
   Serial.println("Adafruit MMA8451 test!");
   
@@ -49,15 +45,20 @@ void loop() {
    *  Por como se ha dispuesto el sensor y el nodo, la ecleración debe ser 9,8 m/s^2 en el eje Y y cero en los demás ejes
    *  Si no fuera así ha habido una caída
   */
-  if (abs(event.acceleration.x) > max_error || abs(event.acceleration.z) > max_error || event.acceleration.y > -max_error) {
+  if (abs(event.acceleration.x) > max_error) {
     //se ha producido una caída
+    Serial.println(event.acceleration.y);
      Serial.println("caida");
-     mySerial.println("caida");
-     tone(pin_bzz, 1000);
-  } else {
-     noTone(pin_bzz);
-  }
-  mySerial.println();
+     tone(pin_bzz, 10000, 1000);
+  } 
   Serial.println();
-  delay(1000);
+  delay(500);
+}
+
+void tone(uint8_t _pin, unsigned int frequency, unsigned long duration) {
+  pinMode (_pin, OUTPUT );
+  analogWriteFreq(frequency);
+  analogWrite(_pin,500);
+  delay(duration);
+  analogWrite(_pin,0);
 }

@@ -36,8 +36,8 @@ static void get_scan_result(void)
 	CHECK_RET(ret);
 
 	for (i = 0; i < count; i++)
-		printf("{ID: {IDSystem:%s, IDGroup:%s, IDPerson:%-17s}, IDAnte:%i, pow:%i, rssi:%i, time:%i}\n",
-				sistemaID, list[i].name, list[i].bssid, antenaID, powDevices, list[i].signal_level, (unsigned int)time(NULL));
+		printf("{tech: wifi, ID: {IDSystem:%s, IDGroup:%s, IDPerson:%-17s}, IDAnte:%i, pow:%i, rssi:%i, time:%i}\n",
+				sistemaID, list[i].name, list[i].bssid, antenaID, powDevices, list[i].signal_level-255, (unsigned int)time(NULL));
 
 	free(list);
 	artik_release_api_module(wifi);

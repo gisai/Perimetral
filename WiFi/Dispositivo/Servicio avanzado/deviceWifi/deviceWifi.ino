@@ -108,8 +108,9 @@ void loop()
   client.print(event.acceleration.x);
   client.print(",y:");
   client.print(event.acceleration.y);
-  client.print(",z:");
+  client.print(",z:");  
   client.print(event.acceleration.z);
+  client.print("}");
   if (abs(event.acceleration.x) > max_error || abs(event.acceleration.z) > max_error) {
     //se ha producido una caída
      tone(pin_bzz, 1000);

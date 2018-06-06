@@ -8,6 +8,7 @@
 #include <Wire.h>
 #include <Adafruit_MMA8451.h>
 #include <Adafruit_Sensor.h>
+#include <SoftwareSerial.h> 
  
 const char ssid[] = "NodeMCU-CUADRILLA#1";    //Definimos la SSDI de nuestro servidor WiFi -nombre de red- 
 const char password[] = "12345678";       //Definimos la contraseña de nuestro servidor 
@@ -20,6 +21,8 @@ Adafruit_MMA8451 mma = Adafruit_MMA8451();
 double max_error = 1.5;
 int pin_bzz = 3;
 int bateria;
+
+SoftwareSerial GPS_Serial(7, 8); // RX, TX
 
 
 /* 
@@ -66,6 +69,8 @@ void setup() {
   Serial.print("Range = "); 
   Serial.print(2 << mma.getRange());  
   Serial.println("G");
+
+  GPS_Serial.begin(9600); 
 }
 
  
@@ -110,12 +115,20 @@ void loop()
   client.print(event.acceleration.y);
   client.print(",z:");
   client.print(event.acceleration.z);
+  client.print("},");
   if (abs(event.acceleration.x) > max_error || abs(event.acceleration.z) > max_error) {
     //se ha producido una caída
      tone(pin_bzz, 1000);
   } else {
     noTone(pin_bzz);    
   }
+
+  char rc;
+   if (GPS_Serial.available()){
+        rc = GPS_Serial.read();
+        client.print("position:");
+        client.print(rc);
+   }
   client.println("}");
   // Se finaliza la petición al cliente. Se inicaliza la espera de una nueva petición.
   //Desconexión de los clientes

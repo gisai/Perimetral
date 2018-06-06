@@ -44,7 +44,7 @@ function parse_rssi {
 	  # CONVERSIÓN DE HEXADECIMAL A DECIMAL
 	# ¡CUIDADO! OPERACIÓN LENTA, REQUIERE DECENAS DE MS
       #RSSI=`echo "ibase=16; $RSSI" | bc`
-      #RSSI=$[RSSI - 256 + $POWER]
+      RSSI=$[RSSI - 255]
 }
 
 

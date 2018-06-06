@@ -33,7 +33,7 @@ int potenciaDBM = 8;
 static void scan_callback(artik_bt_event event, void *data, void *user_data)
 {
     artik_bt_device *dev = (artik_bt_device *) data;
-    printf("{ID: {IDSystem:%i, IDGroup:%s, IDPerson:%s}, IDAnte:%i, pow:%i, rssi:%i, time:%i}\n", dev[0].manufacturer_id, dev[0].remote_name, dev[0].remote_address, idAntena, potenciaDBM, dev[0].rssi, (unsigned int)time(NULL));
+    printf("{tech:bt, ID: {IDSystem:%i, IDGroup:%s, IDPerson:%s}, IDAnte:%i, pow:%i, rssi:%i, time:%i}\n", dev[0].manufacturer_id, dev[0].remote_name, dev[0].remote_address, idAntena, potenciaDBM, dev[0].rssi, (unsigned int)time(NULL));
 }
 
 //Función de reinicio tras timeout

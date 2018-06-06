@@ -54,7 +54,7 @@ public class MyDiscoveryListener implements IDiscoveryListener {
 			
 			int RSSI = DiscoveryOptions.calculateDiscoveryValue(discoveredDevice.getXBeeProtocol(), options);
 		
-			System.out.format("{ID: {IDSystem:%s, IDGroup:%s, IDPerson:%s}, IDAnte:%d, pow:%d, rssi:%d, time:%d}\n", 
+			System.out.format("{tech: zigbee, ID: {IDSystem:%s, IDGroup:%s, IDPerson:%s}, IDAnte:%d, pow:%d, rssi:%d, time:%d}\n", 
 					IDSystem,discoveredDevice.getNodeID(), discoveredDevice.get64BitAddress().toString(), antenaNum, pow,  RSSI, Calendar.getInstance().getTimeInMillis());		    
 	}
 	

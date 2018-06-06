@@ -29,6 +29,6 @@ void packetProcessing (char packet[]) {
 	
     personID = packet[25] | (int32_t)packet[24] << 8 | (int32_t)packet[23] << 16 | (int32_t)packet[22] << 24;
 	rssi = (int32_t)packet[28] - 255 + potencia;
- 	printf("{ID: {IDSystem:%s, IDGroup:%d, IDPerson:%d}, IDAnte:%d, pow:%d, rssi:%d, time:%d}", systemID, groupID, personID, antenaID, potencia, rssi, current_time);
+ 	printf("{tech:RFID, ID: {IDSystem:%s, IDGroup:%d, IDPerson:%d}, IDAnte:%d, pow:%d, rssi:%d, time:%d}", systemID, groupID, personID, antenaID, potencia, rssi, current_time);
 	printf("\n");
 }

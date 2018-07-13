@@ -1,0 +1,20 @@
+{
+  "name": "wifi-avanzado",
+  "version": "1.0.0",
+  "description": "Proyecto de servidor WiFi avanzado para Perimeter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "wifi",
+    "perimeter"
+  ],
+  "author": "Borja Bordel",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  }
+}

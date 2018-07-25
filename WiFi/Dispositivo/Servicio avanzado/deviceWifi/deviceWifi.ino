@@ -102,7 +102,7 @@ void loop()
 String body="ID=tech: wifi, ID: {PERIMETER,NodeMCU-CUADRILLA#1,";
 body+=WiFi.softAPmacAddress();
 body+="}";
-body+="&sensor=options:{bateria:";
+body+=",sensor=options:{bateria:";
 bateria = analogRead(A0);  
 body+=bateria;
 body+=",";

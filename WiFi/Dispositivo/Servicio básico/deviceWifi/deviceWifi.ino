@@ -5,6 +5,8 @@
  */
  
 #include <ESP8266WiFi.h>                  //Incluye la librería ESP8266WiFi
+
+#define POWER 0  //Potencia en dBm
  
 const char ssid[] = "NodeMCU-CUADRILLA#1";    //Definimos la SSDI de nuestro servidor WiFi -nombre de red- 
 const char password[] = "12345678";       //Definimos la contraseña de nuestro servidor 
@@ -25,6 +27,7 @@ void setup() {
   server.begin();                         //inicializamos el servidor
   WiFi.mode(WIFI_AP);
   WiFi.softAP(ssid, password);            //Red con clave, en el canal 1 y visible
+  WiFi.setOutputPower(POWER);
   //WiFi.softAP(ssid, password,3,1);      //Red con clave, en el canal 3 y visible 
   //WiFi.softAP(ssid);                    //Red abierta
  

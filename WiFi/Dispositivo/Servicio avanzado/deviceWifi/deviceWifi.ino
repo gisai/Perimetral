@@ -8,6 +8,8 @@
 #include <Wire.h>
 #include <Adafruit_MMA8451.h>
 #include <Adafruit_Sensor.h>
+
+#define POWER 0  //Potencia en dBm
  
 const char ap_ssid[] = "NodeMCU-CUADRILLA#1";    //Definimos la SSDI de nuestro servidor WiFi -nombre de red- 
 const char ap_password[] = "12345678";       //Definimos la contraseña de nuestro servidor 
@@ -37,6 +39,8 @@ void setup() {
  
   WiFi.mode(WIFI_AP_STA);
   WiFi.softAP(ap_ssid, ap_password);            //Red con clave, en el canal 1 y visible
+
+  WiFi.setOutputPower(POWER);
   //WiFi.softAP(ssid, password,3,1);      //Red con clave, en el canal 3 y visible 
   //WiFi.softAP(ssid);                    //Red abierta
 

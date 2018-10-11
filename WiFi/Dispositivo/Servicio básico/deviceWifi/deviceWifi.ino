@@ -6,7 +6,7 @@
  
 #include <ESP8266WiFi.h>                  //Incluye la librería ESP8266WiFi
 
-#define POWER 0  //Potencia en dBm
+#define POWER 0  //Potencia en dBm entre 0 y 20.5
  
 const char ssid[] = "NodeMCU-CUADRILLA#1";    //Definimos la SSDI de nuestro servidor WiFi -nombre de red- 
 const char password[] = "12345678";       //Definimos la contraseña de nuestro servidor 

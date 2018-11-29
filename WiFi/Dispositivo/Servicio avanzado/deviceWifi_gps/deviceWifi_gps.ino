@@ -25,10 +25,12 @@ int PinLED = 2;
 
 Adafruit_MMA8451 mma = Adafruit_MMA8451();
 double max_error = 1.5;
-int pin_bzz = 3;
+
+//Definimos el pin de salida - GPIO / D3
+int pin_bzz = 0; 
 int bateria;
 
-SoftwareSerial GPS_Serial(7, 8); // RX, TX
+SoftwareSerial mySerial(13, 15, false, 256); // RX, TX
 
 
 /* 

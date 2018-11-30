@@ -1,0 +1,2 @@
+
+gcc pa.c -o artikscan -I/usr/include/aarch64-linux-gnu/artik/base -I/usr/include/aarch64-linux-gnu/artik/bluetooth -lartik-sdk-base
